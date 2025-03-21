@@ -28,19 +28,25 @@ msg_ok "Installed Dependencies"
 # Setup App
 msg_info "Setup ${APPLICATION}"
 RELEASE=$(curl -s https://api.github.com/repos/spotdl/spotify-downloader/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3) }')
+<<<<<<< HEAD
 msg_info "https://github.com/spotDL/spotify-downloader/releases/download/${RELEASE}/${APPLICATION}-${RELEASE#v}-linux"
 wget -q "https://github.com/spotDL/spotify-downloader/releases/download/${RELEASE}/${APPLICATION}-${RELEASE#v}-linux"
 mv "${APPLICATION}"-"${RELEASE}"-linux /opt/"${APPLICATION}"/"${APPLICATION}"-"${RELEASE}"-linux
 chmod +x /opt/"${APPLICATION}"/spotdl
+=======
+wget -q "https://github.com/spotDL/spotify-downloader/releases/download/${RELEASE}/${APPLICATION}-${RELEASE#v}-linux"
+mv "${APPLICATION}"-"${RELEASE#v}"-linux /opt/spotify-downloader/"${APPLICATION}"
+chmod +x /opt/spotify-downloader/"${APPLICATION}"
+>>>>>>> bcfe1be (Debugging spotdl link)
 #
 #
 #
-echo "${RELEASE}" >/opt/"${APPLICATION}"_version.txt
+echo "${RELEASE}" >/opt/spotify-downloader/"${APPLICATION}"_version.txt
 msg_ok "Setup ${APPLICATION}"
 
 # Creating REST API script
 msg_info "Creating REST API"
-cat <<'EOF' >/opt/"${APPLICATION}"/rest_api.sh
+cat <<'EOF' >/opt/spotify-downloader/rest_api.sh
 #!/bin/bash
 
 PORT=8080
@@ -143,7 +149,7 @@ $(
 start_server
 EOF
 
-chmod +x /opt/"${APPLICATION}"/rest_api.sh
+chmod +x /opt/spotify-downloader/rest_api.sh
 msg_ok "Created REST API"
 
 # Creating Service
@@ -154,10 +160,10 @@ Description=${APPLICATION} Service
 After=network.target
 
 [Service]
-ExecStart=/opt/${APPLICATION}/rest_api.sh
+ExecStart=/opt/spotify-downloader/rest_api.sh
 Restart=always
 User=root
-WorkingDirectory=/opt/${APPLICATION}
+WorkingDirectory=/opt/spotify-downloader
 
 [Install]
 WantedBy=multi-user.target
@@ -176,7 +182,7 @@ if command -v ufw &>/dev/null; then
 fi
 
 # Adding usage instructions
-cat <<EOF >/opt/"${APPLICATION}"/README.md
+cat <<EOF >/opt/spotify-downloader/README.md
 # Spotify Downloader API
 
 This service provides a REST API for downloading Spotify tracks using spotdl.
@@ -204,7 +210,7 @@ This service provides a REST API for downloading Spotify tracks using spotdl.
 - List downloads:
   \`curl http://localhost:8080/api/downloads\`
 
-Downloaded files are stored in: /opt/${APPLICATION}/downloads
+Downloaded files are stored in: /opt/spotify-downloader/downloads
 EOF
 
 # Cleanup
