@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # Copyright (c) 2021-2025 tteck
 # Author: tteck (tteckster)
 # Co-Author: MickLesk
@@ -14,6 +15,7 @@ variables() {
     RANDOM_UUID="$(cat /proc/sys/kernel/random/uuid)" # generates a random UUID and sets it to the RANDOM_UUID variable.
 }
 
+# shellcheck source=../misc/api.func
 source <(curl -s https://raw.githubusercontent.com/adriangith/ProxmoxVED/refs/heads/spotDL/misc/api.func)
 
 # This function sets various color variables using ANSI escape codes for formatting text in the terminal.

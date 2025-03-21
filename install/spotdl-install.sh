@@ -16,7 +16,7 @@ update_os
 
 # Installing Dependencies with the 3 core dependencies (curl;sudo;mc)
 msg_info "Installing Dependencies"
-$STD get install -y \
+$STD apt-get install -y \
     curl \
     sudo \
     mc \
@@ -28,9 +28,7 @@ msg_ok "Installed Dependencies"
 # Setup App
 msg_info "Setup ${APPLICATION}"
 RELEASE=$(curl -s https://api.github.com/repos/spotdl/spotify-downloader/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3) }')
-set -x
 wget -q "https://github.com/spotdl/spotify-downloader/archive/refs/tags/v${RELEASE}/${APPLICATION}-${RELEASE}-linux"
-set +x
 mv "${APPLICATION}"-"${RELEASE}"-linux /opt/"${APPLICATION}"/"${APPLICATION}"-"${RELEASE}"-linux
 chmod +x /opt/"${APPLICATION}"/spotdl
 #
