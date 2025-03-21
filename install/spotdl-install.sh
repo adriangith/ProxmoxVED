@@ -28,16 +28,9 @@ msg_ok "Installed Dependencies"
 # Setup App
 msg_info "Setup ${APPLICATION}"
 RELEASE=$(curl -s https://api.github.com/repos/spotdl/spotify-downloader/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3) }')
-<<<<<<< HEAD
-msg_info "https://github.com/spotDL/spotify-downloader/releases/download/${RELEASE}/${APPLICATION}-${RELEASE#v}-linux"
-wget -q "https://github.com/spotDL/spotify-downloader/releases/download/${RELEASE}/${APPLICATION}-${RELEASE#v}-linux"
-mv "${APPLICATION}"-"${RELEASE}"-linux /opt/"${APPLICATION}"/"${APPLICATION}"-"${RELEASE}"-linux
-chmod +x /opt/"${APPLICATION}"/spotdl
-=======
 wget -q "https://github.com/spotDL/spotify-downloader/releases/download/${RELEASE}/${APPLICATION}-${RELEASE#v}-linux"
 mv "${APPLICATION}"-"${RELEASE#v}"-linux /opt/spotify-downloader/"${APPLICATION}"
 chmod +x /opt/spotify-downloader/"${APPLICATION}"
->>>>>>> bcfe1be (Debugging spotdl link)
 #
 #
 #
