@@ -36,12 +36,12 @@ chmod +x /opt/"${APPLICATION}"/spotdl
 #
 #
 #
-echo "${RELEASE}" >/opt/${APPLICATION}_version.txt
+echo "${RELEASE}" >/opt/"${APPLICATION}"_version.txt
 msg_ok "Setup ${APPLICATION}"
 
 # Creating REST API script
 msg_info "Creating REST API"
-cat <<'EOF' >/opt/${APPLICATION}/rest_api.sh
+cat <<'EOF' >/opt/"${APPLICATION}"/rest_api.sh
 #!/bin/bash
 
 PORT=8080
@@ -149,7 +149,7 @@ msg_ok "Created REST API"
 
 # Creating Service
 msg_info "Creating Service"
-cat <<EOF >/etc/systemd/system/${APPLICATION}.service
+cat <<EOF >/etc/systemd/system/"${APPLICATION}".service
 [Unit]
 Description=${APPLICATION} Service
 After=network.target
@@ -163,7 +163,7 @@ WorkingDirectory=/opt/${APPLICATION}
 [Install]
 WantedBy=multi-user.target
 EOF
-systemctl enable -q --now ${APPLICATION}.service
+systemctl enable -q --now "${APPLICATION}".service
 msg_ok "Created Service"
 
 motd_ssh
@@ -177,7 +177,7 @@ if command -v ufw &>/dev/null; then
 fi
 
 # Adding usage instructions
-cat <<EOF >/opt/${APPLICATION}/README.md
+cat <<EOF >/opt/"${APPLICATION}"/README.md
 # Spotify Downloader API
 
 This service provides a REST API for downloading Spotify tracks using spotdl.

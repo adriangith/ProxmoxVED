@@ -24,7 +24,8 @@
     },
     "shellcheck.customArgs": [
         "--rcfile",
-        ".vscode/.shellcheckrc"
+        ".vscode/.shellcheckrc",
+        "-x"
     ],
     "git.autofetch": true,
     "git.confirmSync": false,

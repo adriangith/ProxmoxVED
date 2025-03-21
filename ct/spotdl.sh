@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck source=../misc/build.func
 source <(curl -s https://raw.githubusercontent.com/adriangith/ProxmoxVED/refs/heads/spotDL/misc/build.func)
 # Copyright (c) 2021-2025 community-scripts ORG
 # Author: adriangith
