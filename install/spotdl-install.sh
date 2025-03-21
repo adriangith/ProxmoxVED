@@ -29,12 +29,12 @@ msg_ok "Installed Dependencies"
 msg_info "Setup ${APPLICATION}"
 RELEASE=$(curl -s https://api.github.com/repos/spotdl/spotify-downloader/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3) }')
 wget -q "https://github.com/spotDL/spotify-downloader/releases/download/${RELEASE}/${APPLICATION}-${RELEASE#v}-linux"
-mv "${APPLICATION}"-"${RELEASE#v}"-linux /opt/spotify-downloader/"${APPLICATION}"
+mv "${APPLICATION}-${RELEASE#v}-linux" "/opt/spotify-downloader/${APPLICATION}"
 chmod +x /opt/spotify-downloader/"${APPLICATION}"
 #
 #
 #
-echo "${RELEASE}" >/opt/spotify-downloader/"${APPLICATION}"_version.txt
+echo "${RELEASE}" >"/opt/spotify-downloader/${APPLICATION}_version.txt"
 msg_ok "Setup ${APPLICATION}"
 
 # Creating REST API script
@@ -147,7 +147,7 @@ msg_ok "Created REST API"
 
 # Creating Service
 msg_info "Creating Service"
-cat <<EOF >/etc/systemd/system/"${APPLICATION}".service
+cat <<EOF >"/etc/systemd/system/${APPLICATION}.service"
 [Unit]
 Description=${APPLICATION} Service
 After=network.target
@@ -161,7 +161,7 @@ WorkingDirectory=/opt/spotify-downloader
 [Install]
 WantedBy=multi-user.target
 EOF
-systemctl enable -q --now "${APPLICATION}".service
+systemctl enable -q --now "${APPLICATION}.service"
 msg_ok "Created Service"
 
 motd_ssh
