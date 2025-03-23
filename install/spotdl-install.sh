@@ -27,22 +27,18 @@ $STD apt-get install -y \
     python3-pip
 msg_ok "Installed Dependencies"
 
-# Setup App
-msg_info "Setup ${APPLICATION}"
-RELEASE=$(curl -s https://api.github.com/repos/spotdl/spotify-downloader/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3) }')
-wget -q "https://github.com/spotDL/spotify-downloader/releases/download/${RELEASE}/${APPLICATION}-${RELEASE#v}-linux"
-mkdir -p /opt/spotify-downloader/ &&
-    mv "${APPLICATION}-${RELEASE#v}-linux" "/opt/spotify-downloader/${APPLICATION}" &&
-    chmod +x /opt/spotify-downloader/"${APPLICATION}"
-#
-#
-#
-echo "${RELEASE}" >"/opt/spotify-downloader/${APPLICATION}_version.txt"
+# Setup App using pip instead of binary
+msg_info "Setup ${APPLICATION} via pip"
+$STD pip3 install spotdl
+# Create directory structure
+mkdir -p /opt/spotify-downloader/downloads
+# Save version info
+CURRENT_VERSION=$(pip show spotdl | grep Version | awk '{print $2}')
+echo "${CURRENT_VERSION}" >"/opt/spotify-downloader/${APPLICATION}_version.txt"
 msg_ok "Setup ${APPLICATION}"
 
 # Creating Flask REST API
 msg_info "Creating REST API with Flask"
-mkdir -p /opt/spotify-downloader/downloads
 
 # Install Flask
 $STD pip3 install flask
@@ -65,7 +61,6 @@ app = Flask(__name__)
 
 # Configuration
 DOWNLOAD_DIR = "/opt/spotify-downloader/downloads"
-SPOTDL_BIN = "/opt/spotify-downloader/spotdl"
 PORT = 8080
 
 # Setup logging
@@ -86,7 +81,8 @@ def download_track(spotify_link, request_id):
     log_file = f"/tmp/spotdl_{request_id}.log"
     result_file = f"{log_file}.result"
 
-    cmd = [SPOTDL_BIN, spotify_link]
+    # Using python module directly instead of binary
+    cmd = ["python3", "-m", "spotdl", spotify_link]
 
     try:
         # Set current directory to downloads
